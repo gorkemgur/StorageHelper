@@ -13,7 +13,7 @@ import Foundation
 /// This strategy conforms to the `StorageStrategyProtocol` protocol and provides
 /// methods to save, fetch, and delete `Codable` objects using UserDefaults.
 internal class UserDefaultsStrategy: StorageStrategyProtocol {
-    
+  
     /// Saves a `Codable` item to UserDefaults.
     ///
     /// - Parameters:

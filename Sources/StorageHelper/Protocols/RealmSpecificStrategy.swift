@@ -26,5 +26,4 @@ public protocol RealmSpecificStrategy {
     /// Resets all data in the database.
     ///
     /// - Throws: An error if the reset operation fails.
-    func reset() throws
 }
