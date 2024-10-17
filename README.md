@@ -40,7 +40,11 @@ For Realm:
 
 ```swift
 let config = Realm.Configuration(/* your configuration */)
-let realmManager = StorageManager(storageType: .realm(config))
+let realmManager = StorageManager(storageType: .realm(config)) 
+
+// optional you can use spesific functions for realm with .asRealmStrategy()
+let realmManager = StorageManager(storageType: .realm(config)).asRealmStrategy()
+
 ```
 
 ### Saving Data
@@ -103,6 +107,6 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 
 ## Contact
 
-Project Owner - [@yourtwitterhandle](https://twitter.com/buckybuckk)
+Project Owner - [@buckybuckk](https://twitter.com/buckybuckk)
 
-Project Link: [https://github.com/yourusername/StorageHelper](https://github.com/gorkemgur/StorageHelper)
+Project Link: [https://github.com/gorkemgur/StorageHelper](https://github.com/gorkemgur/StorageHelper)
