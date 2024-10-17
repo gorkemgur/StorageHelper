@@ -40,7 +40,11 @@ For Realm:
 
 ```swift
 let config = Realm.Configuration(/* your configuration */)
-let realmManager = StorageManager(storageType: .realm(config))
+let realmManager = StorageManager(storageType: .realm(config)) 
+
+// optional you can use spesific functions for realm with .asRealmStrategy()
+let realmManager = StorageManager(storageType: .realm(config)).asRealmStrategy()
+
 ```
 
 ### Saving Data
