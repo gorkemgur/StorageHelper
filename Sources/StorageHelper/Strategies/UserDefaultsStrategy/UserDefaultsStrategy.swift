@@ -12,8 +12,8 @@ import Foundation
 /// A storage strategy that uses UserDefaults to persist and retrieve data.
 /// This strategy conforms to the `StorageStrategyProtocol` protocol and provides
 /// methods to save, fetch, and delete `Codable` objects using UserDefaults.
-public class UserDefaultsStrategy: StorageStrategyProtocol {
-    
+internal class UserDefaultsStrategy: StorageStrategyProtocol {
+  
     /// Saves a `Codable` item to UserDefaults.
     ///
     /// - Parameters:
@@ -22,7 +22,7 @@ public class UserDefaultsStrategy: StorageStrategyProtocol {
     /// - Throws:
     ///   - `GeneralStorageError.encodingFailed` if encoding fails.
     ///   - `UserDefaultsError.saveFailed` if the save operation fails.
-    public func save<T: Codable>(_ item: T, forKey key: String) throws {
+    func save<T: Codable>(_ item: T, forKey key: String) throws {
         do {
             let data = try JSONEncoder().encode(item)
             UserDefaults.standard.set(data, forKey: key)
@@ -43,7 +43,7 @@ public class UserDefaultsStrategy: StorageStrategyProtocol {
     /// - Throws:
     ///   - `UserDefaultsError.dataNotFound` if no data is found for the key.
     ///   - `GeneralStorageError.decodingFailed` if decoding fails.
-    public func fetch<T: Codable>(forKey key: String) throws -> T {
+    func fetch<T: Codable>(forKey key: String) throws -> T {
         guard let data = UserDefaults.standard.data(forKey: key) else {
             StorageLogger.shared.log("No data found for key: \(key)", level: .warning)
             throw UserDefaultsError.dataNotFound
@@ -62,7 +62,7 @@ public class UserDefaultsStrategy: StorageStrategyProtocol {
     /// Deletes an item from UserDefaults.
     ///
     /// - Parameter key: The key of the item to delete from UserDefaults.
-    public func delete(forKey key: String) {
+    func delete(forKey key: String) {
         UserDefaults.standard.removeObject(forKey: key)
         StorageLogger.shared.log("Deleted item for key: \(key)", level: .info)
     }
