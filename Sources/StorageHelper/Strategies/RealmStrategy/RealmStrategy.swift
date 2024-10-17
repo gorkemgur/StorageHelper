@@ -16,7 +16,7 @@ public typealias RealmStorageStrategy = StorageStrategyProtocol & RealmSpecificS
 /// A storage strategy that uses Realm to persist and retrieve data.
 /// This class implements both `StorageStrategyProtocol` and `RealmSpecificStrategy` protocols,
 /// providing methods to save, fetch, delete, and perform other Realm-specific operations.
-public final class RealmStrategy: RealmStorageStrategy {
+internal final class RealmStrategy: RealmStorageStrategy {
     private let realm: Realm
     private let realmConfiguration: Realm.Configuration
     
@@ -24,7 +24,7 @@ public final class RealmStrategy: RealmStorageStrategy {
     ///
     /// - Parameter realmConfiguration: The configuration to use for the Realm instance.
     /// - Throws: `RealmError.initializationFailed` if the Realm instance cannot be created.
-    public init(realmConfiguration: Realm.Configuration) throws {
+    init(realmConfiguration: Realm.Configuration) throws {
         self.realmConfiguration = realmConfiguration
         do {
             self.realm = try Realm(configuration: realmConfiguration)
@@ -40,7 +40,7 @@ public final class RealmStrategy: RealmStorageStrategy {
     ///   - item: The item to save. Must conform to `Codable`.
     ///   - key: The key under which to save the item in Realm.
     /// - Throws: `RealmError.transactionFailed` if the save operation fails.
-    public func save<T: Codable>(_ item: T, forKey key: String) throws {
+    func save<T: Codable>(_ item: T, forKey key: String) throws {
         do {
             let data = try JSONEncoder().encode(item)
             let object = RealmStorageObject(key: key, data: data)
@@ -62,7 +62,7 @@ public final class RealmStrategy: RealmStorageStrategy {
     /// - Throws:
     ///   - `RealmError.objectNotFound` if no object is found for the given key.
     ///   - `GeneralStorageError.decodingFailed` if decoding fails.
-    public func fetch<T: Codable>(forKey key: String) throws -> T {
+    func fetch<T: Codable>(forKey key: String) throws -> T {
         guard let object = realm.object(ofType: RealmStorageObject.self, forPrimaryKey: key) else {
             StorageLogger.shared.log("No object found for key: \(key)", level: .warning)
             throw RealmError.objectNotFound
@@ -87,7 +87,7 @@ public final class RealmStrategy: RealmStorageStrategy {
     ///
     /// - Parameter key: The key of the item to delete from Realm.
     /// - Throws: `RealmError.transactionFailed` if the delete operation fails.
-    public func delete(forKey key: String) throws {
+    func delete(forKey key: String) throws {
         guard let object = realm.object(ofType: RealmStorageObject.self, forPrimaryKey: key) else {
             StorageLogger.shared.log("No object found to delete for key: \(key)", level: .warning)
             return
@@ -107,7 +107,7 @@ public final class RealmStrategy: RealmStorageStrategy {
     /// Resets the entire Realm database.
     ///
     /// - Throws: `RealmError.transactionFailed` if the reset operation fails.
-    public func reset() throws {
+    func reset() throws {
         do {
             try realm.write {
                 realm.deleteAll()
@@ -123,7 +123,7 @@ public final class RealmStrategy: RealmStorageStrategy {
     ///
     /// - Parameter predicate: An NSPredicate that defines the condition for deletion.
     /// - Throws: `RealmError.transactionFailed` if the delete operation fails.
-    public func delete(where predicate: NSPredicate) throws {
+    func delete(where predicate: NSPredicate) throws {
         let objects = realm.objects(RealmStorageObject.self).filter(predicate)
         do {
             try realm.write {
@@ -140,7 +140,7 @@ public final class RealmStrategy: RealmStorageStrategy {
     ///
     /// - Parameter keys: An array of keys identifying the items to be deleted.
     /// - Throws: `RealmError.transactionFailed` if the delete operation fails.
-    public func deleteMultipleItems(forKeys keys: [String]) throws {
+    func deleteMultipleItems(forKeys keys: [String]) throws {
         let objects = realm.objects(RealmStorageObject.self).filter("key IN %@", keys)
         do {
             try realm.write {
